@@ -32,6 +32,7 @@ function Navigation() {
     }
 
     let addPlaceButton = null
+    
     if(currentUser?.role === 'admin'){
         addPlaceButton = (
             <li>
