@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
 })
 
 router.get('/profile', async (req, res) => {
-    res.json(req.currenUser)
+    res.json(req.currentUser)
 })
 
 module.exports = router
@@ -28,7 +28,8 @@ module.exports = router
    
 
 
- 
+
+
  
 
   

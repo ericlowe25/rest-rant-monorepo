@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       values: [
         'reviewer',
         'admin'
-      ]
+      ],
     },
     passwordDigest: DataTypes.STRING
   }, {

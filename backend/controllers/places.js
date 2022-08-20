@@ -3,9 +3,9 @@ const db = require("../models")
 const { Place, Comment, User } = db
 
 router.post('/', async (req, res) => {
-        if(req.currentUser?.canAddPlace()){
-            return res.status(403).json({message: 'You are not allowed to add a place'})
-        }       
+    if(req.currentUser?.canAddPlace()){
+        return res.status(403).json({message: 'You are not allowed to add a place'})
+    }       
     if (!req.body.pic) {
         req.body.pic = 'http://placekitten.com/400/400'
     }
