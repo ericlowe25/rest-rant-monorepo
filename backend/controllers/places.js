@@ -1,9 +1,11 @@
 const router = require('express').Router()
 const db = require("../models")
-
 const { Place, Comment, User } = db
 
 router.post('/', async (req, res) => {
+        if(req.currentUser?.canAddPlace()){
+            return res.status(403).json({message: 'You are not allowed to add a place'})
+        }       
     if (!req.body.pic) {
         req.body.pic = 'http://placekitten.com/400/400'
     }
@@ -45,6 +47,10 @@ router.get('/:placeId', async (req, res) => {
 })
 
 router.put('/:placeId', async (req, res) => {
+    if(req.currentUser?.canEditPlace()){
+        return res.status(403).json({message: 'You are not allowed to edit places'})
+    } 
+
     let placeId = Number(req.params.placeId)
     if (isNaN(placeId)) {
         res.status(404).json({ message: `Invalid id "${placeId}"` })
@@ -63,6 +69,10 @@ router.put('/:placeId', async (req, res) => {
 })
 
 router.delete('/:placeId', async (req, res) => {
+    if(req.currentUser?.canDeletePlace()){
+        return res.status(403).json({message: 'You are not allowed to delete places'})
+    }
+
     let placeId = Number(req.params.placeId)
     if (isNaN(placeId)) {
         res.status(404).json({ message: `Invalid id "${placeId}"` })
@@ -125,7 +135,8 @@ router.delete('/:placeId/comments/:commentId', async (req, res) => {
         if (!comment) {
             res.status(404).json({ message: `Could not find comment with id "${commentId}" for place with id "${placeId}"` })
         } else if (comment.authorId !== Request.currentUser?.userId) {
-            res.status(403).json({message: `You do not have permission to delete comment "${comment.commentId}"`})
+            res.status(403).json({
+                message: `You do not have permission to delete comment "${comment.commentId}"`})
         }else {
             await comment.destroy()
             res.json(comment)

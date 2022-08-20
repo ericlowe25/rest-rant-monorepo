@@ -25,5 +25,3 @@ app.use('/authentication',require('./controllers/authentication'))
 app.listen(process.env.PORT, () => {
     console.log(`Listening on ${process.env.PORT}`)
 })
-// const PORT = process.env.PORT || 5000;
-// app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
