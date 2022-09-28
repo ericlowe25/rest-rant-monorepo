@@ -4,7 +4,8 @@ import { CurrentUser} from '../contexts/CurrentUser'
 function CommentCard({ comment, onDelete }) {
 
     const {currentUser} = useContext(CurrentUser)
-         let deleteButton = null;
+
+    let deleteButton = null;
          
     if (currentUser?.userId === comment.authorId) {
        deleteButton =(

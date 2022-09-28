@@ -6,7 +6,7 @@ function Navigation() {
 
     const history = useHistory()
 
-    const { currentUser } = useContext(CurrentUser)
+    const { currentUser, setCurrentUser } = useContext(CurrentUser)
 
     let loginActions = (
         <>
@@ -25,18 +25,31 @@ function Navigation() {
 
     if (currentUser) {
         loginActions = (
-            <li style={{ float: 'right' }}>
-                Logged in as {currentUser.firstName} {currentUser.lastName}
-            </li>
+            <>
+                <li style={{float: 'right'}}>
+                    <a href='#' onClick={() => {
+                        setCurrentUser(null)
+                        localStorage.removeItem('token')
+                        history.push(`/`)
+                    }}>
+                        Log Out
+                    </a>
+                </li>
+                <li style={{ float: 'right' }}>
+                    Logged in as {currentUser.firstName} {currentUser.lastName}
+                </li>
+            </>
         )
     }
 
+    // only display the Add Place button if the user is an admin
     let addPlaceButton = null
-    
-    if(currentUser?.role === 'admin'){
+    if (currentUser?.role === 'admin') {
         addPlaceButton = (
             <li>
-                <a href="#" onClick={() => history.push("/places/new")}>Add Place</a>
+                <a href="#" onClick={() => history.push("/places/new")}>
+                    Add Place
+                </a>
             </li>
         )
     }
@@ -54,8 +67,8 @@ function Navigation() {
                         Places
                     </a>
                 </li>
-                {addPlaceButton}
                 {loginActions}
+                {addPlaceButton}
             </ul>
         </nav>
     )

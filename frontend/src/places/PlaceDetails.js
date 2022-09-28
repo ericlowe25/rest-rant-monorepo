@@ -10,9 +10,9 @@ function PlaceDetails() {
 
 	const history = useHistory()
 
-	const { currentUser } = useContext(CurrentUser)
-
 	const [place, setPlace] = useState(null)
+	
+	const { currentUser } = useContext(CurrentUser)
 
 	useEffect(() => {
 		const fetchData = async () => {
@@ -41,6 +41,10 @@ function PlaceDetails() {
 	async function deleteComment(deletedComment) {
 		await fetch(`http://localhost:5001/places/${place.placeId}/comments/${deletedComment.commentId}`, {
 			method: 'DELETE',
+			headers: {
+				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${localStorage.getItem('token')}`
+			}
 		})
 
 		setPlace({
@@ -54,8 +58,8 @@ function PlaceDetails() {
 		const response = await fetch(`http://localhost:5001/places/${place.placeId}/comments`, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				'Authorization': `Bearer ${localStorage.getItem('token')}`
+				'Authorization': `Bearer ${localStorage.getItem('token')}`,
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(commentAttributes)
 		})
@@ -108,8 +112,12 @@ function PlaceDetails() {
 	if (currentUser?.role === 'admin') {
 		placeActions = (
 			<>
-			   <a className="btn btn-warning" onClick={editPlace}>Edit</a>
-			   <button type ="submit" className="btn btn-danger" onClick={deletePlace}>Delete</button>
+			   <a className="btn btn-warning" onClick={editPlace}>
+				Edit
+			   </a>{` `}
+			   <button type ="submit" className="btn btn-danger" onClick={deletePlace}>
+				      Delete
+			   </button>
 			</>
 		)
 	}
