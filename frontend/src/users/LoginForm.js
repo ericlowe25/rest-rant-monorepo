@@ -17,24 +17,27 @@ function LoginForm() {
 
     async function handleSubmit(e) {
         e.preventDefault()
-            const response = await fetch(`http://localhost:5001/authentication/`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(credentials)
-            })
-        
-            const data = await response.json()
-            if(response.status === 200) {
-                setCurrentUser(data.user)
-                history.push(`/`)
-            } else {
-                setErrorMessage(data.meaasge)
-                
-            }
-        }         
+        const response = await fetch(`${process.env.REACT_APP_SERVER_URL}authentication/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+        })
+    
+        const data = await response.json()
 
+        if (response.status === 200) {
+            setCurrentUser(data.user)
+            history.push(`/`)
+        } else {
+            setErrorMessage(data.message)
+        }
+    
+        console.log(data)
+    }
+      
+    
     return (
         <main>
             <h1>Login</h1>
@@ -77,5 +80,6 @@ function LoginForm() {
             </form>
         </main>
     )
-        }   
+}
+
 export default LoginForm
